@@ -148,14 +148,14 @@ def predict_full(text, tfidf, model, tfidf_multi=None, lr_multi=None, meta=None)
     }
 
 # ── LIME explanation ──────────────────────────────────────────────────────────
-def get_lime_words(text, tfidf, model, n=8):
+def get_lime_words(text, tfidf, model, n=15):
     try:
         from lime.lime_text import LimeTextExplainer
         def proba_fn(texts):
             cleaned = [clean_text_v2(t) for t in texts]
             return model.predict_proba(tfidf.transform(cleaned))
         exp = LimeTextExplainer(class_names=["Safe","Bully"]).explain_instance(
-            text, proba_fn, num_features=n, num_samples=200
+            text, proba_fn, num_features=n, num_samples=500
         )
         return exp.as_list()
     except Exception:
@@ -309,10 +309,16 @@ if page == "📋 Report Incident":
         # Flags
         st.markdown(f"<div class='section-head'>Detected flags</div>", unsafe_allow_html=True)
         for flag in result["flags"]:
-            color = "#fee2e2" if "Suicide" in flag or "Threat" in flag else "#fef3c7"
+            if "Suicide" in flag:
+                bg, text = "#7f1d1d", "#fecaca"   # dark red bg, light red text
+            elif "Threat" in flag:
+                bg, text = "#7c2d12", "#fed7aa"   # dark orange bg, light orange text
+            else:
+                bg, text = "#713f12", "#fef08a"   # dark yellow bg, light yellow text
             st.markdown(
-                f"<span style='background:{color};padding:3px 10px;border-radius:5px;"
-                f"font-size:0.85rem;margin-right:6px'>{flag}</span>",
+                f"<span style='background:{bg};color:{text};padding:4px 12px;"
+                f"border-radius:6px;font-size:0.85rem;font-weight:600;"
+                f"margin-right:6px'>{flag}</span>",
                 unsafe_allow_html=True
             )
 
