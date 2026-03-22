@@ -47,5 +47,3 @@ Cyberbullying Classification — Kaggle — 47,692 labelled tweets across 6 cate
 
 🆘 Emergency Helplines (India)
 iCall: 9152987821  |  Vandrevala: 1860-2662-345  |  icallhelpline.org
-
-Institution: [Your College Name]  |  Team: [Your Names]
