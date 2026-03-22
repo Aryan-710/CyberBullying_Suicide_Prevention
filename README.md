@@ -26,12 +26,6 @@ ModelF1 ScoreAUC-ROCAccuracyLogistic Regression ⭐0.9260.9040.871Random Forest�
     ├── lr_multi.pkl
     └── meta.json
 
-⚙️ Run Locally
-bashgit clone https://github.com/Aryan-710/CyberBullying_Suicide_Prevention.git
-cd CyberBullying_Suicide_Prevention
-pip install -r requirements.txt
-streamlit run safecampus_app.py
-
 🔬 Research Papers
 PaperUsed ForCyberbullying Detection using NLP — ScienceDirect, 2025Baseline approachHybrid Models for Cyberbullying — MDPI Electronics, 2021Model selection validationSuicidal Ideation Detection — MDPI IJERPH, 2022Severity scoring basisLIME "Why Should I Trust You?" — KDD 2016Explainability moduleSentence Transformer Fine-Tuning — Springer, 2024Future work (BERT)
 
