@@ -165,14 +165,15 @@ def get_lime_words(text, tfidf, model, n=8):
 st.markdown("""
 <style>
     .report-box {
-        background: #f0f4ff;
-        border: 1px solid #c0ccee;
+        background: #1e1e2e;
+        border: 1px solid #444466;
         border-radius: 10px;
         padding: 1.2rem 1.5rem;
         font-family: monospace;
         font-size: 0.88rem;
         white-space: pre-wrap;
         line-height: 1.7;
+        color: #e0e0f0 !important;
     }
     .badge-critical { background:#fee2e2; color:#991b1b; padding:4px 10px;
                       border-radius:6px; font-weight:600; }
@@ -404,7 +405,7 @@ if page == "📋 Report Incident":
 
         st.markdown("---")
         st.subheader("📄 Auto-Generated Incident Report")
-        st.markdown(f"<div class='report-box'>{report_text}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='report-box' style='color:#e0e0f0 !important;'>{report_text}</div>", unsafe_allow_html=True)
 
         col_a, col_b = st.columns(2)
         with col_a:
