@@ -84,12 +84,23 @@ TIER3_SELF_HARM = {
     "end my life","not worth living","disappear forever",
     "everyone hates me","nobody cares","worthless","no point living",
 }
+TIER_RAGGING_MILD = {
+    "fresher", "junior", "assignment", "intro de", "intro",
+    "sir bol", "dance kar", "gaana ga", "canteen se", "senior"
+}
+TIER_RAGGING_SEVERE = {
+    "hostel room aaja", "murga", "kapde nikal", "strip",
+    "ragging", "police", "principal", "will complain", "maar", "peet",
+    "baap", "mms"
+}
 
 def severity_score(text: str, model_prob: float) -> float:
     s     = str(text).lower()
     score = 0.5 * model_prob
     if any(w in s for w in TIER1_INSULT)    : score += 0.15
     if any(w in s for w in TIER2_THREAT)    : score += 0.25
+    if any(w in s for w in TIER_RAGGING_MILD) : score += 0.15
+    if any(w in s for w in TIER_RAGGING_SEVERE) : score += 0.35
     if any(p in s for p in TIER3_SELF_HARM) : score += 0.50
     return round(min(score, 1.0), 4)
 
@@ -97,6 +108,8 @@ def get_flags(text: str) -> list:
     s, flags = str(text).lower(), []
     if any(w in s for w in TIER1_INSULT)    : flags.append("Insult / Harassment")
     if any(w in s for w in TIER2_THREAT)    : flags.append("Direct Threat")
+    if any(w in s for w in TIER_RAGGING_MILD) : flags.append("Academic / Hierarchy Abuse")
+    if any(w in s for w in TIER_RAGGING_SEVERE): flags.append("Severe Ragging / Hazing")
     if any(p in s for p in TIER3_SELF_HARM) : flags.append("Suicide / Self-harm Risk")
     return flags or ["None detected"]
 
@@ -199,7 +212,7 @@ models_ok = tfidf is not None and model is not None
 with st.sidebar:
     st.image("https://img.icons8.com/color/96/shield.png", width=60)
     st.title("SafeCampus")
-    st.caption("Cyberbullying & Suicide Prevention Portal")
+    st.caption("Anti-Ragging, Cyberbullying & Suicide Prevention Portal")
     st.markdown("---")
 
     page = st.radio("Navigate", ["📋 Report Incident",
@@ -209,6 +222,7 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("**Emergency helplines 🇮🇳**")
+    st.markdown("Anti-Ragging: `1800-180-5522`")
     st.markdown("iCall: `9152987821`")
     st.markdown("Vandrevala: `1860-2662-345`")
     st.markdown("iCall Chat: [icallhelpline.org](https://icallhelpline.org)")
@@ -230,7 +244,7 @@ if page == "📋 Report Incident":
     st.markdown(
         "**You are safe here.** Paste the message(s) you received below. "
         "Our system will assess the severity and — if needed — automatically "
-        "generate a formal report for the college counselor. "
+        "generate a formal report for the college anti-ragging cell / counselor. "
         "_You decide what gets submitted._"
     )
     st.info("🔒 **Privacy guarantee**: Your submission is processed on the server only when you click Analyze. "
@@ -311,6 +325,8 @@ if page == "📋 Report Incident":
         for flag in result["flags"]:
             if "Suicide" in flag:
                 bg, text = "#7f1d1d", "#fecaca"   # dark red bg, light red text
+            elif "Ragging" in flag or "Hierarchy" in flag:
+                bg, text = "#4c0519", "#ffe4e6"   # dark rose bg, light rose/pink text
             elif "Threat" in flag:
                 bg, text = "#7c2d12", "#fed7aa"   # dark orange bg, light orange text
             else:
@@ -402,10 +418,11 @@ if page == "📋 Report Incident":
             f"ACTION TAKEN    : {action_text}\n"
             f"{'='*48}\n"
             f"SUPPORT RESOURCES:\n"
+            f"  Anti-Ragging Helpline : 1800-180-5522\n"
             f"  iCall Helpline        : 9152987821\n"
             f"  Vandrevala Foundation  : 1860-2662-345\n"
             f"  iCall Chat             : https://icallhelpline.org\n"
-            f"  College Counselor      : counselor@college.edu\n"
+            f"  Anti-Ragging Cell      : antiragging@college.edu\n"
             f"{'='*48}\n"
         )
 
